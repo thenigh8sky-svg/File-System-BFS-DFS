@@ -1,6 +1,8 @@
 #include <stdio.h>
+#include <string.h>
 
 int a[10][10], visited[10], n;
+char files[10][30];
 
 void BFS(int start)
 {
@@ -11,11 +13,11 @@ void BFS(int start)
     q[rear++] = start;
     visited[start] = 1;
 
-    printf("BFS: ");
+    printf("\nBFS: ");
     while(front < rear)
     {
         int v = q[front++];
-        printf("%d ", v);
+        printf("%s ", files[v]);
 
         for(i = 0; i < n; i++)
             if(a[v][i] && !visited[i])
@@ -30,7 +32,7 @@ void DFS(int v)
 {
     int i;
     visited[v] = 1;
-    printf("%d ", v);
+    printf("%s ", files[v]);
 
     for(i = 0; i < n; i++)
         if(a[v][i] && !visited[i])
@@ -39,17 +41,22 @@ void DFS(int v)
 
 int main()
 {
-    int i, j, start;
+    int i, j, start, found = 0;
+    char search[30];
 
-    printf("Enter number of folders: ");
+    printf("Enter number of files/folders: ");
     scanf("%d", &n);
+
+    printf("Enter file/folder names:\n");
+    for(i = 0; i < n; i++)
+        scanf("%s", files[i]);
 
     printf("Enter adjacency matrix:\n");
     for(i = 0; i < n; i++)
         for(j = 0; j < n; j++)
             scanf("%d", &a[i][j]);
 
-    printf("Enter starting folder: ");
+    printf("Enter starting node (0 to %d): ", n-1);
     scanf("%d", &start);
 
     BFS(start);
@@ -59,6 +66,21 @@ int main()
 
     printf("\nDFS: ");
     DFS(start);
+
+    printf("\nEnter file to search: ");
+    scanf("%s", search);
+
+    for(i = 0; i < n; i++)
+        if(strcmp(files[i], search) == 0)
+        {
+            found = 1;
+            break;
+        }
+
+    if(found)
+        printf("File Found!");
+    else
+        printf("File Not Found!");
 
     return 0;
 }
